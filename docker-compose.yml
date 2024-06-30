@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  vnc:
+    build: .
+    environment:
+      - APPLICATION=${APPLICATION:-wine notepad}
+      - APPLICATION_DIR=${APPLICATION_DIR:-/root/.wine/drive_c}
+      - PIPEWIRE_SOCKET=${PIPEWIRE_SOCKET:-/run/user/1000/pipewire-0}
+      - XDG_RUNTIME_DIR=/tmp
+    image: localhost/docker-vnc-wine
+    ports:
+      - 5900:5900
+    volumes:
+      - ./.wine:/root/.wine
+      - ${PIPEWIRE_SOCKET}:/tmp/pipewire-0
+    working_dir: ${APPLICATION_DIR}
